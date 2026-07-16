@@ -1,14 +1,21 @@
+require("dotenv").config();
+
 const { Telegraf } = require("telegraf");
-const { BOT_TOKEN } = require("./config");
 
-const start = require("./handlers/start");
-const signal = require("./handlers/signal");
+const bot = new Telegraf(process.env.BOT_TOKEN);
 
-const bot = new Telegraf(BOT_TOKEN);
+const start = require("./hanslers/start");
+const signal = require("./hanslers/signal");
 
+// Load handlers
 start(bot);
 signal(bot);
 
+// Start bot
 bot.launch();
 
-console.log("🤖 Trading Bot Running...");
+console.log("🤖 Trading Signal Bot Running...");
+
+// Stop gracefully
+process.once("SIGINT", () => bot.stop("SIGINT"));
+process.once("SIGTERM", () => bot.stop("SIGTERM"));
