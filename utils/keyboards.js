@@ -1,20 +1,18 @@
-const menu = {
+module.exports = {
   reply_markup: {
     inline_keyboard: [
       [
         {
           text: "📈 Get Signal",
-          callback_data: "signal"
+          callback_data: "get_signal"
         }
       ],
       [
         {
           text: "🔄 Refresh Signal",
-          callback_data: "signal"
+          callback_data: "refresh_signal"
         }
       ]
     ]
   }
 };
-
-module.exports = { menu };
