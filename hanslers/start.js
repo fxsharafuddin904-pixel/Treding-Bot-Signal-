@@ -1,8 +1,8 @@
-const { menu } = require("../utils/keyboards");
+const menu = require("../utils/keyboards");
 
 module.exports = (bot) => {
-  bot.start((ctx) => {
-    ctx.reply(
+  bot.start(async (ctx) => {
+    await ctx.reply(
       "🤖 AI Trading Signal Bot\n\nChoose an option:",
       menu
     );
