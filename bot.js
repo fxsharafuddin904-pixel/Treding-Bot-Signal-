@@ -4,7 +4,7 @@ const { Telegraf, session } = require("telegraf");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// Session (selected market, timeframe, last photo save করার জন্য)
+// Session middleware
 bot.use(session());
 
 // Handlers
@@ -17,10 +17,19 @@ start(bot);
 signal(bot);
 callback(bot);
 
-// Bot start
-bot.launch();
+// Error handler
+bot.catch((err, ctx) => {
+  console.error("Bot Error:", err);
+});
 
-console.log("🤖 Trading Signal Bot Running...");
+// Start bot
+bot.launch()
+  .then(() => {
+    console.log("🤖 Trading Signal Bot Running...");
+  })
+  .catch((err) => {
+    console.error("Launch Error:", err);
+  });
 
 // Graceful stop
 process.once("SIGINT", () => bot.stop("SIGINT"));
