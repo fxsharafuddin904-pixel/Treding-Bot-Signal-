@@ -1,36 +1,36 @@
 require("dotenv").config();
 
-const { Telegraf, session } = require("telegraf");
+const { Telegraf, session, Markup } =
+  require("telegraf");
 
-const bot = new Telegraf(process.env.BOT_TOKEN);
+const bot = new Telegraf(
+  process.env.BOT_TOKEN
+);
 
-// Session middleware
 bot.use(session());
 
-// Handlers
-const start = require("./hanslers/start");
-const signal = require("./hanslers/signal");
-const callback = require("./hanslers/callback");
+require("./handlers/signal")(bot);
 
-// Load handlers
-start(bot);
-signal(bot);
-callback(bot);
-
-// Error handler
-bot.catch((err, ctx) => {
-  console.error("Bot Error:", err);
+bot.start((ctx) => {
+  ctx.reply(
+    "🤖 AI Trading Signal Bot\n\nChoose an option:",
+    Markup.inlineKeyboard([
+      [
+        Markup.button.callback(
+          "📈 Get Signal",
+          "get_signal"
+        )
+      ],
+      [
+        Markup.button.callback(
+          "⚙️ Settings",
+          "settings"
+        )
+      ]
+    ])
+  );
 });
 
-// Start bot
-bot.launch()
-  .then(() => {
-    console.log("🤖 Trading Signal Bot Running...");
-  })
-  .catch((err) => {
-    console.error("Launch Error:", err);
-  });
+bot.launch();
 
-// Graceful stop
-process.once("SIGINT", () => bot.stop("SIGINT"));
-process.once("SIGTERM", () => bot.stop("SIGTERM"));
+console.log("🤖 Bot Running...");
