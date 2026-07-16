@@ -2,6 +2,8 @@ const getSignal = require("../services/signalService");
 
 module.exports = (bot) => {
   async function sendSignal(ctx) {
+    await ctx.answerCbQuery();
+
     const data = await getSignal();
 
     if (!data) {
@@ -20,7 +22,7 @@ ${data.analysis}
 
 ⚠️ Trade carefully.`;
 
-    ctx.reply(msg);
+    await ctx.reply(msg);
   }
 
   bot.action("get_signal", sendSignal);
