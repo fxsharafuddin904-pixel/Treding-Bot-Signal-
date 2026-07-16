@@ -1,19 +1,14 @@
 const getSignal = require("../services/signalService");
 
 module.exports = (bot) => {
-  bot.action("signal", async (ctx) => {
-    await ctx.answerCbQuery();
-
+  async function sendSignal(ctx) {
     const data = await getSignal();
 
     if (!data) {
-      return ctx.reply(
-        "❌ Signal API unavailable."
-      );
+      return ctx.reply("❌ Signal API unavailable.");
     }
 
-    const msg =
-`🚨 NEW SIGNAL
+    const msg = `🚨 NEW SIGNAL
 
 💱 Pair: ${data.market}
 📈 Direction: ${data.direction}
@@ -26,5 +21,8 @@ ${data.analysis}
 ⚠️ Trade carefully.`;
 
     ctx.reply(msg);
-  });
+  }
+
+  bot.action("get_signal", sendSignal);
+  bot.action("refresh_signal", sendSignal);
 };
