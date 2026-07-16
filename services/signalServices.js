@@ -1,12 +1,13 @@
 const axios = require("axios");
-const { API_URL } = require("../config");
 
-module.exports = async () => {
-  try {
-    const res = await axios.get(API_URL);
+async function getSignal() {
+  const apiKey = process.env.TWELVE_API_KEY;
 
-    return res.data;
-  } catch (err) {
-    return null;
-  }
-};
+  const res = await axios.get(
+    `https://api.twelvedata.com/rsi?symbol=EUR/USD&interval=1min&time_period=14&apikey=${apiKey}`
+  );
+
+  return res.data;
+}
+
+module.exports = getSignal;
