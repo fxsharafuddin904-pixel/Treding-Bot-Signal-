@@ -1,9 +1,9 @@
 const axios = require("axios");
 
 async function getSignal() {
-  const apiKey = process.env.TWELVE_API_KEY;
-
   try {
+    const apiKey = process.env.TWELVE_API_KEY;
+
     const res = await axios.get(
       `https://api.twelvedata.com/rsi?symbol=EUR/USD&interval=1min&time_period=14&apikey=${apiKey}`
     );
@@ -32,7 +32,7 @@ async function getSignal() {
       analysis
     };
   } catch (err) {
-    console.log(err.message);
+    console.log(err.response?.data || err.message);
     return null;
   }
 }
